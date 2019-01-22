@@ -239,11 +239,7 @@ def equalizeHistYUV(img):
     img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
     gray = img_yuv[:,:,0]
     gray = normalize(gray)
-    # equalize the histogram of the Y channel
-    # img_output = cv2.equalizeHist(gray)
-    # img_output = cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
     img_output = exposure.equalize_adapthist(gray)
-    # show_images([origin_img, gray, img_output], cols=1)
     img_output = img_output.reshape(img_output.shape + (1,))
     return img_output
 
@@ -497,10 +493,6 @@ def load_data(path):
     X, y = data['features'], data['labels']
     return X, y
 
-def normalize(data): 
-    data = (data - data.min()) / (data.max() - data.min())
-    return data
-
 X_train, y_train = load_data(train_balanced_data_file_preprocessed)
 X_valid, y_valid = load_data(valid_data_file_preprocessed)
 X_test, y_test = load_data(test_data_file_preprocessed)
@@ -592,7 +584,7 @@ from sklearn.utils import shuffle
 
 save_file = './lenet'
 EPOCHS = 100
-BATCH_SIZE = 128
+BATCH_SIZE = 256
 
 x = tf.placeholder(tf.float32, (None, 32, 32, 1))
 y = tf.placeholder(tf.int32, (None))
