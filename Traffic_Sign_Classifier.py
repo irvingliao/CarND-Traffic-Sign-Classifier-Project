@@ -423,20 +423,18 @@ def preprocessImages(images):
     out_imgs = np.zeros([images.shape[0], images.shape[1], images.shape[2], 1])
     num = len(images)
     for index in range(num):
+        out_imgs[index] = equalizeHistYUV(images[index])
         if index%100 == 0:
             print_progress(index+1, num)
-        out_imgs[index] = equalizeHistYUV(images[index])
 
     return out_imgs.astype(np.float32)
-#%%
-X_train = preprocessImages(X_train)
-X_valid = preprocessImages(X_valid)
-X_test = preprocessImages(X_test)
 
 #%%
 train_balanced_data_file_preprocessed = "traffic-signs-data/train_balanced_preprocessed.p"
 test_data_file_preprocessed = "traffic-signs-data/test_preprocessed.p"
 valid_data_file_preprocessed = "traffic-signs-data/valid_preprocessed.p"
+
+X_train = preprocessImages(X_train)
 
 n_bytes = 2**31
 max_bytes = 2**31 - 1
@@ -704,15 +702,17 @@ for i in range(8):
 show_images(X_new)
 y_new = np.array([34,40,17,39,28,13,28,24])
 
+#%%
+# Preprocessing the images
+X_new_preproccessed = preprocessImages(X_new)
+show_images(X_new_preproccessed[:,:,:,0])
+
 #%% [markdown]
 # ### Predict the Sign Type for Each Image
 
 #%%
 ### Run the predictions here and use the model to output the prediction for each image.
 ### Make sure to pre-process the images with the same pre-processing pipeline used earlier.
-# Preprocessing the images
-X_new_preproccessed = preprocessImages(X_new)
-show_images(X_new_preproccessed[:,:,:,0])
 
 #%%
 # Predict the Top 5 result 
